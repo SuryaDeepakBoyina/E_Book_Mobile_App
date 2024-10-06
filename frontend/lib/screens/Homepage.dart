@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'models/booksdata.dart';
+import '../models/booksdata.dart';
 import 'detailsPage.dart';
 
 import 'package:http/http.dart' as http;

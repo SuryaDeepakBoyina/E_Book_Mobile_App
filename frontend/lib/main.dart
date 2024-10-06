@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+import 'package:ebook/providers/book_providers.dart';
 
-
-import './Homepage.dart';
+import 'screens/Homepage.dart';
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => BookProvider(),
+      child: MyApp(),
+    ),);
 }
 
 class MyApp extends StatelessWidget {

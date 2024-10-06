@@ -1,10 +1,23 @@
-const express = require("express");
+require('dotenv').config();
+const express = require('express');
+const { connectToDatabase } = require('./config/database');
+const bookRoutes = require('./routes/bookRoutes.js');
+const errorHandler = require('./utils/errorHandler');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.listen(2000,()=>{
-    console.log("Server is running on port 2000");
-});
-app.get("/",(req,res)=>{
-    res.send("Hello World123");
-});
+app.use(express.json());
+app.use('/api/books', bookRoutes);
+app.use(errorHandler);
+
+connectToDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Failed to connect to the database', error);
+    process.exit(1);
+  });

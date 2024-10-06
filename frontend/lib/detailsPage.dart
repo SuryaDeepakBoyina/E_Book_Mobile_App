@@ -1,20 +1,42 @@
+import 'package:ebook/models/data.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'ReadingPage.dart';
 import 'ListeningPage.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class DetailsPage extends StatefulWidget {
   final String imageAddress;
   final String bookname;
   final String authorname;
-  DetailsPage({required this.authorname, required this.bookname, required this.imageAddress});
+  final String bookId;
+  DetailsPage({required this.authorname, required this.bookname, required this.imageAddress,required this.bookId});
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+  Booksdata? bookDetails;
   @override
+  void initState() {
+    super.initState();
+    fetchBookDetails();
+  }
+
+  Future<void> fetchBookDetails() async {
+    final response = await http.get(Uri.parse('YOUR_API_ENDPOINT/${widget.bookId}'));
+    if (response.statusCode == 200) {
+      setState(() {
+        bookDetails = Booksdata.fromJson(json.decode(response.body));
+      });
+    } else {
+      // Handle error
+      print('Failed to load book details');
+    }
+  }
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
@@ -381,7 +403,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ReadingPage(bookname: widget.bookname, authorname: '', imageAddress: '',),
+                                  builder: (context) => ReadingPage(bookname: widget.bookname, authorname: '', imageAddress: '',bookId: widget.bookId)
                                 ));
                           },
                           child: Container(
@@ -452,6 +474,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                             authorname: widget.authorname,
                                             bookname: widget.bookname,
                                             imageAddress: widget.imageAddress,
+                                            bookId: widget.bookId
                                           ),
                                         )),
                                     child: Container(

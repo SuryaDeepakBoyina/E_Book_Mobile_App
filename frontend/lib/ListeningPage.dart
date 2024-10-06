@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // import 'ReadingPage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class ListeningPage extends StatefulWidget {
   final String imageAddress;
   final String bookname;
   final String authorname;
-  ListeningPage({required this.authorname,required this.bookname,required this.imageAddress});
+  final String bookId;
+  ListeningPage({required this.authorname,required this.bookname,required this.imageAddress,required this.bookId});
   @override
   _ListeningPageState createState() => _ListeningPageState();
 }
@@ -16,18 +20,36 @@ class _ListeningPageState extends State<ListeningPage> {
   late bool played;
   late IconData play;
 
+  String audioUrl = '';
+
   void playIcon() {
     setState(() {
       played ? play = Icons.pause : play = Icons.play_arrow;
     });
   }
-
+  @override
   void initState() {
     super.initState();
     play = Icons.pause;
     played = true;
+    fetchAudioUrl();
   }
-
+  Future<void> fetchAudioUrl() async {
+    try {
+      final response = await http.get(Uri.parse('YOUR_API_ENDPOINT/audio/${widget.bookId}'));
+      if (response.statusCode == 200) {
+        setState(() {
+          audioUrl = json.decode(response.body)['audioUrl'];
+        });
+      } else {
+        // Handle error
+        print('Failed to load audio URL: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error fetching audio URL: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

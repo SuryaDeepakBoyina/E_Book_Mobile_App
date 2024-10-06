@@ -1,15 +1,41 @@
+// kk
+
 class Booksdata {
+  // ... existing properties ...
   String bookname;
   String authorName;
   String imagePath;
   int percentageCompleted;
   double rating ;
-  Booksdata(
-      {required this.authorName,
-      required this.bookname,
-      required this.percentageCompleted,
-      required this.imagePath,required this.rating});
+  Booksdata({
+    required this.authorName,
+    required this.bookname,
+    required this.percentageCompleted,
+    required this.imagePath,
+    required this.rating
+  });
+
+  factory Booksdata.fromJson(Map<String, dynamic> json) {
+    return Booksdata(
+      authorName: json['authorName'],
+      bookname: json['bookname'],
+      percentageCompleted: json['percentageCompleted'],
+      imagePath: json['imagePath'],
+      rating: json['rating'].toDouble(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'authorName': authorName,
+      'bookname': bookname,
+      'percentageCompleted': percentageCompleted,
+      'imagePath': imagePath,
+      'rating': rating,
+    };
+  }
 }
+
 
 List<Booksdata> continueReading = [
   Booksdata(
@@ -54,3 +80,7 @@ List<Booksdata> popular = [
       ),
       
 ];
+
+
+
+

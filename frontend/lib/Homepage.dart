@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import './models/data.dart';
 import './detailsPage.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class Homepage extends StatefulWidget {
   @override
   _HomepageState createState() => _HomepageState();
@@ -11,7 +14,24 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int indx = 0;
+  List<Booksdata> books = [];
   @override
+  void initState() {
+    super.initState();
+    fetchBooks();
+  }
+  Future<void> fetchBooks() async {
+    final response = await http.get(Uri.parse('YOUR_API_ENDPOINT'));
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = json.decode(response.body);
+      setState(() {
+        books = jsonList.map((json) => Booksdata.fromJson(json)).toList();
+      });
+    } else {
+      // Handle error
+      print('Failed to load books');
+    }
+  }
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -297,7 +317,7 @@ class _HomepageState extends State<Homepage> {
                                                               .authorName,
                                                       bookname:
                                                           continueReading[index]
-                                                              .bookname,
+                                                              .bookname, bookId: '1',
                                                     ),
                                                   ),
                                                 ),

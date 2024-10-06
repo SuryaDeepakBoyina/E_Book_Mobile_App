@@ -1,16 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class ReadingPage extends StatefulWidget {
   final String imageAddress;
   final String bookname;
   final String authorname;
-  ReadingPage({required this.authorname,required this.bookname,required this.imageAddress});
+  final String bookId;
+  ReadingPage({required this.authorname,required this.bookname,required this.imageAddress,required this.bookId});
   @override
   _ReadingPageState createState() => _ReadingPageState();
 }
 
 class _ReadingPageState extends State<ReadingPage> {
+  String bookContent = '';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBookContent();
+  }
+  Future<void> fetchBookContent() async {
+    try {
+      final response = await http.get(Uri.parse('YOUR_API_ENDPOINT/book/${widget.bookId}/content'));
+      if (response.statusCode == 200) {
+        setState(() {
+          bookContent = json.decode(response.body)['content'];
+          isLoading = false;
+        });
+      } else {
+        // Handle error
+        print('Failed to load book content: ${response.statusCode}');
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error fetching book content: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     String text =
@@ -109,7 +144,9 @@ class _ReadingPageState extends State<ReadingPage> {
               //color: Colors.red,
               height: size.height * 0.7,
               width: size.width,
-              child: Center(
+              child: isLoading
+              ? Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
                   child: Text(
                 text,
                 overflow: TextOverflow.fade,

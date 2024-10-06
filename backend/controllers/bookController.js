@@ -1,28 +1,56 @@
-const { client } = require('../config/database');
-const { ObjectId } = require('mongodb');
+const Book = require('../models/Book');
 
-const getBook = async (req, res, next) => {
+exports.getAllBooks = async (req, res, next) => {
   try {
-    const db = client.db(process.env.DB_NAME);
-    const book = await db.collection('books').findOne({ _id: new ObjectId(req.params.id) });
-    if (book) {
-      res.json(book);
-    } else {
-      res.status(404).json({ message: 'Book not found' });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
-const getAllBooks = async (req, res, next) => {
-  try {
-    const db = client.db(process.env.DB_NAME);
-    const books = await db.collection('books').find().toArray();
+    const books = await Book.find();
     res.json(books);
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getBook, getAllBooks };
+exports.getBookById = async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.json(book);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.createBook = async (req, res, next) => {
+  try {
+    const book = new Book(req.body);
+    const savedBook = await book.save();
+    res.status(201).json(savedBook);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateBook = async (req, res, next) => {
+  try {
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.json(book);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteBook = async (req, res, next) => {
+  try {
+    const book = await Book.findByIdAndDelete(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.json({ message: 'Book deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};

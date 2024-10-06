@@ -27,7 +27,6 @@ const bookSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Virtual for book's URL
 bookSchema.virtual('url').get(function() {
   return '/book/' + this._id;
 });

@@ -1,0 +1,19 @@
+{
+  "name": "e-book-app",
+  "version": "1.0.0",
+  "description": "E_Book_App_AI_Features",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Surya_Aditya_Dayita_Shanuak",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "latest-version": "^9.0.0"
+  }
+}

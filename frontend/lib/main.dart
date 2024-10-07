@@ -18,6 +18,10 @@ class MyApp extends StatelessWidget {
       
       title: "ebookUI",
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: Homepage(),
       
     );

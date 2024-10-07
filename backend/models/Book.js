@@ -1,34 +1,20 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const bookSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  author: {
-    type: String,
-    required: true
-  },
-  image: {
-    type: String,
-    required: true
-  },
-  rating: {
-    type: Number,
-    min: 0,
-    max: 5,
-    default: 0
-  },
-  description: {
-    type: String,
-    required: true
-  }
-}, {
-  timestamps: true
+const BookSchema = new Schema({
+  title: { type: String, required: true },
+  authorName: { type: String, required: true },
+  imagePath: { type: String, required: true },
+  percentageCompleted: { type: Number, default: 0 },
+  rating: { type: Number, min: 0, max: 5, default: 0 },
+  description: { type: String, required: true },
+  content: { type: String }, // Add this if you're storing book content
+  audioUrl: { type: String } // Add this if you're storing audio URLs
+}, { timestamps: true });
+
+// Virtual for book's URL
+BookSchema.virtual('url').get(function() {
+  return '/catalog/book/' + this._id;
 });
 
-bookSchema.virtual('url').get(function() {
-  return '/book/' + this._id;
-});
-
-module.exports = mongoose.model('Book', bookSchema);
+module.exports = mongoose.model('Book', BookSchema);

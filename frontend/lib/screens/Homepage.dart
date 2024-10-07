@@ -7,25 +7,34 @@ import 'detailsPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
+import 'package:ebook/providers/book_providers.dart';
+
+
 class Homepage extends StatefulWidget {
   @override
   _HomepageState createState() => _HomepageState();
 }
 
+
 class _HomepageState extends State<Homepage> {
   int indx = 0;
   List<Booksdata> books = [];
+  List<Booksdata> popular = [];
   @override
   void initState() {
     super.initState();
-    fetchBooks();
+    Future.microtask(() => 
+      Provider.of<BookProvider>(context, listen: false).fetchAllBooks()
+    );
   }
   Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse('YOUR_API_ENDPOINT'));
+    final response = await http.get(Uri.parse('http://localhost:2000'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       setState(() {
         books = jsonList.map((json) => Booksdata.fromJson(json)).toList();
+        popular = books.where((book) => book.rating > 4).toList();
       });
     } else {
       // Handle error
@@ -317,7 +326,7 @@ class _HomepageState extends State<Homepage> {
                                                               .authorName,
                                                       bookname:
                                                           continueReading[index]
-                                                              .bookname, bookId: '1',
+                                                              .title, bookId: '1',
                                                     ),
                                                   ),
                                                 ),
@@ -374,7 +383,7 @@ class _HomepageState extends State<Homepage> {
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
-                                                      current[index].bookname,
+                                                      current[index].title,
                                                       style: GoogleFonts.lato(
                                                           color: Color.fromRGBO(
                                                               66, 66, 86, 1),
@@ -802,7 +811,7 @@ class _HomepageState extends State<Homepage> {
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
-                                                      popular[index].bookname,
+                                                      popular[index].title,
                                                       style: GoogleFonts.lato(
                                                           color: Color.fromRGBO(
                                                               66, 66, 86, 1),

@@ -1,12 +1,15 @@
-import 'package:ebook/models/booksdata.dart';
+// import 'package:ebook/models/booksdata.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'ReadingPage.dart';
 import 'ListeningPage.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+
+import 'package:provider/provider.dart';
+import 'package:ebook/providers/book_providers.dart';
 
 class DetailsPage extends StatefulWidget {
   final String imageAddress;
@@ -19,27 +22,37 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  Booksdata? bookDetails;
+  // Booksdata? bookDetails;
   @override
   void initState() {
     super.initState();
-    fetchBookDetails();
+    Future.microtask(() => 
+      Provider.of<BookProvider>(context, listen: false).fetchBookDetails(widget.bookId)
+    );
   }
 
-  Future<void> fetchBookDetails() async {
-    final response = await http.get(Uri.parse('YOUR_API_ENDPOINT/${widget.bookId}'));
-    if (response.statusCode == 200) {
-      setState(() {
-        bookDetails = Booksdata.fromJson(json.decode(response.body));
-      });
-    } else {
-      // Handle error
-      print('Failed to load book details');
-    }
-  }
+  // Future<void> fetchBookDetails() async {
+  //   final response = await http.get(Uri.parse('http://localhost:2000/${widget.bookId}'));
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       bookDetails = Booksdata.fromJson(json.decode(response.body));
+  //     });
+  //   } else {
+  //     // Handle error
+  //     print('Failed to load book details');
+  //   }
+  // }
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
+    return Consumer<BookProvider>(
+      builder: (context, bookProvider, child) {
+        if (bookProvider.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (bookProvider.currentBookDetails == null) {
+          return Center(child: Text('Failed to load book details'));
+        } else {
+          final bookDetails = bookProvider.currentBookDetails!;
     return Scaffold(
       //backgroundColor: Colors.white,
       body: SafeArea(
@@ -115,8 +128,11 @@ class _DetailsPageState extends State<DetailsPage> {
                 },
               ),
             ),
+            Text(bookProvider.currentBookDetails!.title),
+            Text(bookProvider.currentBookDetails!.authorName),
             Hero(
               tag: Text("Haha"),
+              
               child: Container(
                 height: size.height * 0.4,
                 width: size.width * 0.55,
@@ -506,6 +522,9 @@ class _DetailsPageState extends State<DetailsPage> {
           ],
         ),
       )),
+    );
+  }
+      },
     );
   }
 }

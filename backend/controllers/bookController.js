@@ -54,3 +54,28 @@ exports.deleteBook = async (req, res, next) => {
     next(error);
   }
 };
+exports.getBookContent = async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    // Assuming 'content' is a field in your Book model
+    res.json({ content: book.content });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getBookAudio = async (req, res, next) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    // Assuming 'audioUrl' is a field in your Book model
+    res.json({ audioUrl: book.audioUrl });
+  } catch (error) {
+    next(error);
+  }
+};

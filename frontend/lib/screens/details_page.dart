@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'ReadingPage.dart';
-import 'ListeningPage.dart';
+import 'reading_page.dart';
+import 'listening_page.dart';
 
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
@@ -16,7 +16,7 @@ class DetailsPage extends StatefulWidget {
   final String bookname;
   final String authorname;
   final String bookId;
-  DetailsPage({required this.authorname, required this.bookname, required this.imageAddress,required this.bookId});
+  const DetailsPage({Key? key, required this.authorname, required this.bookname, required this.imageAddress,required this.bookId}) : super(key: key);
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
@@ -42,22 +42,23 @@ class _DetailsPageState extends State<DetailsPage> {
   //     print('Failed to load book details');
   //   }
   // }
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Consumer<BookProvider>(
       builder: (context, bookProvider, child) {
         if (bookProvider.isLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (bookProvider.currentBookDetails == null) {
-          return Center(child: Text('Failed to load book details'));
+          return const Center(child: Text('Failed to load book details'));
         } else {
           final bookDetails = bookProvider.currentBookDetails!;
     return Scaffold(
       //backgroundColor: Colors.white,
       body: SafeArea(
           child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             //color: Colors.red,
             gradient: LinearGradient(
                 colors: [Color.fromRGBO(249, 191, 161, 1), Colors.white],
@@ -90,7 +91,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             //color: Colors.black,
                             height: constraints.maxHeight * 0.8,
                             width: constraints.maxWidth * 0.15,
-                            child: FittedBox(
+                            child: const FittedBox(
                                 child: Icon(
                               Icons.arrow_back_ios,
                               color: Colors.white,
@@ -106,7 +107,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         //color: Colors.black,
                         height: constraints.maxHeight * 0.8,
                         width: constraints.maxWidth * 0.15,
-                        child: FittedBox(
+                        child: const FittedBox(
                             child: Icon(
                           Icons.share,
                           color: Colors.white,
@@ -117,7 +118,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         //color: Colors.black,
                         height: constraints.maxHeight * 0.8,
                         width: constraints.maxWidth * 0.15,
-                        child: FittedBox(
+                        child: const FittedBox(
                             child: Icon(
                           Icons.bookmark_border,
                           color: Colors.white,
@@ -131,11 +132,26 @@ class _DetailsPageState extends State<DetailsPage> {
             Text(bookProvider.currentBookDetails!.title),
             Text(bookProvider.currentBookDetails!.authorName),
             Hero(
-              tag: Text("Haha"),
+              tag: const Text("Haha"),
               
               child: Container(
                 height: size.height * 0.4,
                 width: size.width * 0.55,
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(size.width * 0.05),
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage(widget.imageAddress),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: const Color.fromRGBO(203, 201, 208, 1),
+                          blurRadius: 10,
+                          spreadRadius: 0.6,
+                          offset: Offset(size.width * 0.55 * 0.051,
+                              size.height * 0.4 * 0.031))
+                    ]),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return Stack(
@@ -154,10 +170,10 @@ class _DetailsPageState extends State<DetailsPage> {
                             width: constraints.maxWidth * 0.25,
                             child: FittedBox(
                               child: Text(
-                                "⭐ " + 4.5.toString(),
+                                "⭐ ${4.5}",
                                 style: GoogleFonts.lato(
                                     textStyle:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                        const TextStyle(fontWeight: FontWeight.bold)),
                               ),
                             ),
                           ),
@@ -166,21 +182,6 @@ class _DetailsPageState extends State<DetailsPage> {
                     );
                   },
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(size.width * 0.05),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage(widget.imageAddress),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(203, 201, 208, 1),
-                          blurRadius: 10,
-                          spreadRadius: 0.6,
-                          offset: Offset(size.width * 0.55 * 0.051,
-                              size.height * 0.4 * 0.031))
-                    ]),
               ),
             ),
             SizedBox(
@@ -196,7 +197,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 widget.bookname,
                 style: GoogleFonts.lato(
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(66, 66, 86, 1)),
+                    color: const Color.fromRGBO(66, 66, 86, 1)),
               )),
             ),
             Container(
@@ -210,10 +211,10 @@ class _DetailsPageState extends State<DetailsPage> {
                 widget.authorname,
                 style: GoogleFonts.lato(
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(142, 142, 154, 1)),
+                    color: const Color.fromRGBO(142, 142, 154, 1)),
               )),
             ),
-            Container(
+            SizedBox(
               height: size.height * 0.07,
               width: size.width,
               //color: Colors.red,
@@ -222,7 +223,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
+                      SizedBox(
                         //color: Colors.purple,
                         width: constraints.maxWidth * 0.27,
                         child: LayoutBuilder(
@@ -240,7 +241,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     "2010",
                                     style: GoogleFonts.lato(
                                         textStyle: TextStyle(
-                                            color: Color.fromRGBO(66, 66, 86, 1)
+                                            color: const Color.fromRGBO(66, 66, 86, 1)
                                                 .withOpacity(0.9),
                                             fontWeight: FontWeight.bold)),
                                   )),
@@ -256,7 +257,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Text(
                                         "Published in",
                                         style: GoogleFonts.lato(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 fontSize: 20,
                                                 color: Color.fromRGBO(
                                                     142, 142, 154, 1),
@@ -269,11 +270,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       Container(
-                        color: Color.fromRGBO(203, 201, 208, 1),
+                        color: const Color.fromRGBO(203, 201, 208, 1),
                         width: constraints.maxWidth * 0.0031,
                         height: constraints.maxHeight,
                       ),
-                      Container(
+                      SizedBox(
                         //color: Colors.purple,
                         width: constraints.maxWidth * 0.27,
                         child: LayoutBuilder(
@@ -291,12 +292,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                     "156",
                                     style: GoogleFonts.lato(
                                         textStyle: TextStyle(
-                                            color: Color.fromRGBO(66, 66, 86, 1)
+                                            color: const Color.fromRGBO(66, 66, 86, 1)
                                                 .withOpacity(0.9),
                                             fontWeight: FontWeight.bold)),
                                   )),
                                 ),
-                                Container(
+                                SizedBox(
                                   //color: Colors.pink,
                                   height: constraints.maxHeight * 0.4,
                                   width: constraints.maxWidth,
@@ -305,7 +306,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Text(
                                         "Pages",
                                         style: GoogleFonts.lato(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 fontSize: 20,
                                                 color: Color.fromRGBO(
                                                     142, 142, 154, 1),
@@ -318,11 +319,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       Container(
-                        color: Color.fromRGBO(203, 201, 208, 1),
+                        color: const Color.fromRGBO(203, 201, 208, 1),
                         width: constraints.maxWidth * 0.0031,
                         height: constraints.maxHeight,
                       ),
-                      Container(
+                      SizedBox(
                         //color: Colors.purple,
                         width: constraints.maxWidth * 0.27,
                         child: LayoutBuilder(
@@ -340,12 +341,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                     "187",
                                     style: GoogleFonts.lato(
                                         textStyle: TextStyle(
-                                            color: Color.fromRGBO(66, 66, 86, 1)
+                                            color: const Color.fromRGBO(66, 66, 86, 1)
                                                 .withOpacity(0.9),
                                             fontWeight: FontWeight.bold)),
                                   )),
                                 ),
-                                Container(
+                                SizedBox(
                                   //color: Colors.pink,
                                   height: constraints.maxHeight * 0.4,
                                   width: constraints.maxWidth,
@@ -354,7 +355,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                       child: Text(
                                         "Reviews",
                                         style: GoogleFonts.lato(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 fontSize: 20,
                                                 color: Color.fromRGBO(
                                                     142, 142, 154, 1),
@@ -374,7 +375,7 @@ class _DetailsPageState extends State<DetailsPage> {
             SizedBox(
               height: size.height * 0.01,
             ),
-            Container(
+            SizedBox(
               //color: Colors.red,
               height: size.height * 0.04,
               width: size.width,
@@ -382,7 +383,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: Text(
                 "About",
                 style: GoogleFonts.lato(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                   fontWeight: FontWeight.w400,
                   color: Color.fromRGBO(66, 66, 86, 1),
                 )),
@@ -398,13 +399,13 @@ class _DetailsPageState extends State<DetailsPage> {
                 "The Arsonist, by the acclaimed author of The Tall Man, is the story of that man, the fire he lit, and the people who were killed. On the scorching February day in 2009 that became known as Black Saturday, a man lit two fires in Victoria's Latrobe Valley, then sat on the roof of his house to watch the inferno.",
                 overflow: TextOverflow.fade,
                 style: GoogleFonts.lato(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                   fontWeight: FontWeight.w300,
                   color: Color.fromRGBO(66, 66, 86, 1),
                 )),
               )),
             ),
-            Container(
+            SizedBox(
                 //padding: EdgeInsets.all(size.height * 0.01),
                 //color: Colors.red,
                 height: size.height * 0.071,
@@ -426,29 +427,33 @@ class _DetailsPageState extends State<DetailsPage> {
                             //padding: EdgeInsets.all(constraints.maxHeight * 0.15),
                             height: constraints.maxHeight * 0.7,
                             width: constraints.maxWidth * 0.35,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(66, 66, 86, 1),
+                                borderRadius: BorderRadius.circular(
+                                    constraints.maxWidth * 0.03)),
                             child: LayoutBuilder(
                               builder: (context, constraints) {
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       //color: Colors.red,
                                       height: constraints.maxHeight * 0.6,
                                       width: constraints.maxWidth * 0.2,
-                                      child: FittedBox(
+                                      child: const FittedBox(
                                           child: Icon(
                                         Icons.book,
                                         color: Colors.white,
                                       )),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       //color: Colors.purple,
                                       height: constraints.maxHeight * 0.6,
                                       width: constraints.maxWidth * 0.45,
                                       child: FittedBox(
                                         child: Text("Read",
                                             style: GoogleFonts.lato(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     color: Colors.white))),
                                       ),
@@ -457,26 +462,26 @@ class _DetailsPageState extends State<DetailsPage> {
                                 );
                               },
                             ),
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(66, 66, 86, 1),
-                                borderRadius: BorderRadius.circular(
-                                    constraints.maxWidth * 0.03)),
                           ),
                         ),
                         Container(
                           //padding: EdgeInsets.all(constraints.maxHeight * 0.15),
                           height: constraints.maxHeight * 0.7,
                           width: constraints.maxWidth * 0.35,
+                          decoration: BoxDecoration(
+                              color: const Color.fromRGBO(66, 66, 86, 1),
+                              borderRadius: BorderRadius.circular(
+                                  constraints.maxWidth * 0.03)),
                           child: LayoutBuilder(
                             builder: (context, constraints) {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     //color: Colors.red,
                                     height: constraints.maxHeight * 0.6,
                                     width: constraints.maxWidth * 0.2,
-                                    child: FittedBox(
+                                    child: const FittedBox(
                                         child: Icon(
                                       Icons.headset,
                                       color: Colors.white,
@@ -493,14 +498,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                             bookId: widget.bookId
                                           ),
                                         )),
-                                    child: Container(
+                                    child: SizedBox(
                                       //color: Colors.purple,
                                       height: constraints.maxHeight * 0.6,
                                       width: constraints.maxWidth * 0.45,
                                       child: FittedBox(
                                         child: Text("Listen",
                                             style: GoogleFonts.lato(
-                                                textStyle: TextStyle(
+                                                textStyle: const TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     color: Colors.white))),
                                       ),
@@ -510,10 +515,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               );
                             },
                           ),
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(66, 66, 86, 1),
-                              borderRadius: BorderRadius.circular(
-                                  constraints.maxWidth * 0.03)),
                         ),
                       ],
                     );

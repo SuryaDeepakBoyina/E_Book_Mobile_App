@@ -3,6 +3,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:ebook/models/booksdata.dart';
 
+import 'package:logger/logger.dart';
+
+final logger = Logger();
+
+
 class ApiException implements Exception {
   final String message;
   final int? statusCode;
@@ -43,7 +48,7 @@ class BookProvider with ChangeNotifier {
         throw Exception('Failed to load book details');
       }
     } catch (error) {
-      print('Error fetching book details: $error');
+      logger.e('Error fetching book details: $error');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -60,9 +65,9 @@ class BookProvider with ChangeNotifier {
       _books = (data as List).map((item) => Booksdata.fromJson(item)).toList();
       _popularBooks = _books.where((book) => book.rating > 4).toList(); // Example criteria for popular books
     } on ApiException catch (e) {
-      print('API error: $e');
+      logger.e('API error: $e');
     } catch (e) {
-      print('Unexpected error fetching books: $e');
+      logger.e('Unexpected error fetching books: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -78,10 +83,10 @@ class BookProvider with ChangeNotifier {
       final data = await _handleResponse(response);
       _bookContent = data['content'];
     } on ApiException catch (e) {
-      print('API error: $e');
+      logger.e('API error: $e');
       // You can add more specific error handling here if needed
     } catch (e) {
-      print('Unexpected error fetching book content: $e');
+      logger.e('Unexpected error fetching book content: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -97,10 +102,10 @@ class BookProvider with ChangeNotifier {
       final data = await _handleResponse(response);
       _audioUrl = data['audioUrl'];
     } on ApiException catch (e) {
-      print('API error: $e');
+      logger.e('API error: $e');
       // You can add more specific error handling here if needed
     } catch (e) {
-      print('Unexpected error fetching audio URL: $e');
+      logger.e('Unexpected error fetching audio URL: $e');
     } finally {
       _isLoading = false;
       notifyListeners();

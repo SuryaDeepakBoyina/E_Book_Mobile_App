@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../models/booksdata.dart';
-import 'detailsPage.dart';
+import 'details_page.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,6 +12,8 @@ import 'package:ebook/providers/book_providers.dart';
 
 
 class Homepage extends StatefulWidget {
+  const Homepage({Key? key}) : super(key: key);
+
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -38,9 +40,10 @@ class _HomepageState extends State<Homepage> {
       });
     } else {
       // Handle error
-      print('Failed to load books');
+      logger.e('Failed to load books');
     }
   }
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -63,7 +66,7 @@ class _HomepageState extends State<Homepage> {
                           height: constraints.maxHeight * 0.9,
                           width: constraints.maxWidth * 0.20,
                           color: Colors.white,
-                          child: FittedBox(
+                          child: const FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Icon(
                                 Icons.menu,
@@ -83,7 +86,7 @@ class _HomepageState extends State<Homepage> {
                               child: Text(
                                 "Hello Aman",
                                 style: GoogleFonts.lato(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 19,
                                   color: Color.fromRGBO(44, 44, 44, 1),
@@ -97,7 +100,7 @@ class _HomepageState extends State<Homepage> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(
                                   constraints.maxHeight * 0.3),
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                   fit: BoxFit.cover,
                                   image: AssetImage('assets/images/Aman.jpg'))),
                         )
@@ -106,7 +109,7 @@ class _HomepageState extends State<Homepage> {
                   },
                 ),
               ),
-              Container(
+              SizedBox(
                 height: size.height * 0.1,
                 width: double.infinity,
                 //color: Colors.purple,
@@ -145,7 +148,7 @@ class _HomepageState extends State<Homepage> {
                               maxLines: 4,
                               overflow: TextOverflow.fade,
                               style: GoogleFonts.lato(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 17)),
                             ),
@@ -174,7 +177,7 @@ class _HomepageState extends State<Homepage> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               //color: Colors.white,
                               height: constraints.maxHeight * 0.9,
                               width: constraints.maxWidth * 0.2,
@@ -187,15 +190,15 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                             ),
-                            Container(
+                            SizedBox(
                                 //color: Colors.red,
                                 width: constraints.maxWidth * 0.6,
                                 height: constraints.maxHeight,
                                 child: TextField(
                                   decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                           borderSide: BorderSide.none),
-                                      focusedBorder: OutlineInputBorder(
+                                      focusedBorder: const OutlineInputBorder(
                                           borderSide: BorderSide.none),
                                       filled: false,
                                       hintText: "Search by Title,Author,Genre",
@@ -207,7 +210,7 @@ class _HomepageState extends State<Homepage> {
                                   cursorColor: Colors.black45,
                                   onChanged: (stringSearch) {},
                                 )),
-                            Container(
+                            SizedBox(
                               //color: Colors.white,
                               height: constraints.maxHeight * 0.9,
                               width: constraints.maxWidth * 0.192,
@@ -228,7 +231,7 @@ class _HomepageState extends State<Homepage> {
               SizedBox(
                 height: size.height * 0.006,
               ),
-              Container(
+              SizedBox(
                 height: size.height *
                     (1 +
                         (-0.07 -
@@ -239,7 +242,7 @@ class _HomepageState extends State<Homepage> {
 
                 child: ListView(
                   children: [
-                    Container(
+                    SizedBox(
                       //color: Colors.red,
                       height: size.height * 0.35,
                       width: double.infinity,
@@ -299,7 +302,7 @@ class _HomepageState extends State<Homepage> {
                                       );
                                     },
                                   )),
-                              Container(
+                              SizedBox(
                                   //color: Colors.green,
                                   height: constraints.maxHeight * 0.85,
                                   width: constraints.maxWidth,
@@ -331,7 +334,7 @@ class _HomepageState extends State<Homepage> {
                                                   ),
                                                 ),
                                                 child: Hero(
-                                                  tag: Text("Haha"),
+                                                  tag: const Text("Haha"),
                                                   child: Container(
                                                     margin: EdgeInsets.symmetric(
                                                         horizontal:
@@ -358,7 +361,7 @@ class _HomepageState extends State<Homepage> {
                                                               blurRadius: 3,
                                                               spreadRadius: 2,
                                                               offset:
-                                                                  Offset(4, 1),
+                                                                  const Offset(4, 1),
                                                               color: Colors.black
                                                                   .withOpacity(
                                                                       0.1))
@@ -385,7 +388,7 @@ class _HomepageState extends State<Homepage> {
                                                     child: Text(
                                                       current[index].title,
                                                       style: GoogleFonts.lato(
-                                                          color: Color.fromRGBO(
+                                                          color: const Color.fromRGBO(
                                                               66, 66, 86, 1),
                                                           fontWeight:
                                                               FontWeight.w400),
@@ -413,7 +416,7 @@ class _HomepageState extends State<Homepage> {
                                                                     .maxWidth *
                                                                 0.8,
                                                             decoration: BoxDecoration(
-                                                                color: Color
+                                                                color: const Color
                                                                     .fromRGBO(
                                                                         230,
                                                                         230,
@@ -434,7 +437,7 @@ class _HomepageState extends State<Homepage> {
                                                                           .percentageCompleted *
                                                                       0.01,
                                                                   decoration: BoxDecoration(
-                                                                      color: Color
+                                                                      color: const Color
                                                                           .fromRGBO(
                                                                               66,
                                                                               66,
@@ -446,7 +449,7 @@ class _HomepageState extends State<Homepage> {
                                                                 )
                                                               ],
                                                             )),
-                                                        Container(
+                                                        SizedBox(
                                                           height: constraints
                                                               .maxHeight,
                                                           width: constraints
@@ -454,10 +457,8 @@ class _HomepageState extends State<Homepage> {
                                                               0.2,
                                                           child: FittedBox(
                                                               child: Text(
-                                                            current[index]
-                                                                    .percentageCompleted
-                                                                    .toString() +
-                                                                "%",
+                                                            "${current[index]
+                                                                    .percentageCompleted}%",
                                                             style: GoogleFonts.lato(
                                                                 textStyle: TextStyle(
                                                                     fontWeight:
@@ -485,7 +486,7 @@ class _HomepageState extends State<Homepage> {
                         },
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       //color: Colors.red,
                       height: size.height * 0.45,
                       width: double.infinity,
@@ -574,9 +575,9 @@ class _HomepageState extends State<Homepage> {
                                             width: constraints.maxWidth / 5,
                                             decoration: BoxDecoration(
                                                 color: indx == 0
-                                                    ? Color.fromRGBO(
+                                                    ? const Color.fromRGBO(
                                                         66, 66, 86, 1)
-                                                    : Color.fromRGBO(
+                                                    : const Color.fromRGBO(
                                                         238, 238, 238, 1),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -589,7 +590,7 @@ class _HomepageState extends State<Homepage> {
                                                   textStyle: TextStyle(
                                                       color: indx == 0
                                                           ? Colors.white
-                                                          : Color.fromRGBO(171,
+                                                          : const Color.fromRGBO(171,
                                                               171, 179, 1))),
                                             )),
                                           ),
@@ -609,9 +610,9 @@ class _HomepageState extends State<Homepage> {
                                             width: constraints.maxWidth / 5,
                                             decoration: BoxDecoration(
                                                 color: indx == 1
-                                                    ? Color.fromRGBO(
+                                                    ? const Color.fromRGBO(
                                                         66, 66, 86, 1)
-                                                    : Color.fromRGBO(
+                                                    : const Color.fromRGBO(
                                                         238, 238, 238, 1),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -624,7 +625,7 @@ class _HomepageState extends State<Homepage> {
                                                   textStyle: TextStyle(
                                                       color: indx == 1
                                                           ? Colors.white
-                                                          : Color.fromRGBO(171,
+                                                          : const Color.fromRGBO(171,
                                                               171, 179, 1))),
                                             )),
                                           ),
@@ -644,9 +645,9 @@ class _HomepageState extends State<Homepage> {
                                             width: constraints.maxWidth / 5,
                                             decoration: BoxDecoration(
                                                 color: indx == 2
-                                                    ? Color.fromRGBO(
+                                                    ? const Color.fromRGBO(
                                                         66, 66, 86, 1)
-                                                    : Color.fromRGBO(
+                                                    : const Color.fromRGBO(
                                                         238, 238, 238, 1),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -659,7 +660,7 @@ class _HomepageState extends State<Homepage> {
                                                   textStyle: TextStyle(
                                                       color: indx == 2
                                                           ? Colors.white
-                                                          : Color.fromRGBO(171,
+                                                          : const Color.fromRGBO(171,
                                                               171, 179, 1))),
                                             )),
                                           ),
@@ -679,9 +680,9 @@ class _HomepageState extends State<Homepage> {
                                             width: constraints.maxWidth / 5,
                                             decoration: BoxDecoration(
                                                 color: indx == 3
-                                                    ? Color.fromRGBO(
+                                                    ? const Color.fromRGBO(
                                                         66, 66, 86, 1)
-                                                    : Color.fromRGBO(
+                                                    : const Color.fromRGBO(
                                                         238, 238, 238, 1),
                                                 borderRadius:
                                                     BorderRadius.circular(
@@ -694,7 +695,7 @@ class _HomepageState extends State<Homepage> {
                                                   textStyle: TextStyle(
                                                       color: indx == 3
                                                           ? Colors.white
-                                                          : Color.fromRGBO(171,
+                                                          : const Color.fromRGBO(171,
                                                               171, 179, 1))),
                                             )),
                                           ),
@@ -707,7 +708,7 @@ class _HomepageState extends State<Homepage> {
                               SizedBox(
                                 height: constraints.maxHeight * 0.031,
                               ),
-                              Container(
+                              SizedBox(
                                   //color: Colors.green,
                                   height: constraints.maxHeight * 0.7,
                                   width: constraints.maxWidth,
@@ -744,7 +745,7 @@ class _HomepageState extends State<Homepage> {
                                                       BoxShadow(
                                                           blurRadius: 3,
                                                           spreadRadius: 2,
-                                                          offset: Offset(4, 1),
+                                                          offset: const Offset(4, 1),
                                                           color: Colors.black
                                                               .withOpacity(0.1))
                                                     ]),
@@ -779,12 +780,10 @@ class _HomepageState extends State<Homepage> {
                                                             0.12,
                                                         child: FittedBox(
                                                           child: Text(
-                                                            "⭐ " +
-                                                                popular[index]
-                                                                    .rating
-                                                                    .toString(),
+                                                            "⭐ ${popular[index]
+                                                                    .rating}",
                                                             style: GoogleFonts.lato(
-                                                                textStyle: TextStyle(
+                                                                textStyle: const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold)),
@@ -800,7 +799,7 @@ class _HomepageState extends State<Homepage> {
                                                     0.01,
                                               ),
                                               Container(
-                                                padding: EdgeInsets.symmetric(
+                                                padding: const EdgeInsets.symmetric(
                                                     horizontal: 10),
                                                 height: constraints.maxHeight *
                                                     0.07,
@@ -813,13 +812,13 @@ class _HomepageState extends State<Homepage> {
                                                     child: Text(
                                                       popular[index].title,
                                                       style: GoogleFonts.lato(
-                                                          color: Color.fromRGBO(
+                                                          color: const Color.fromRGBO(
                                                               66, 66, 86, 1),
                                                           fontWeight:
                                                               FontWeight.w600),
                                                     )),
                                               ),
-                                              Container(
+                                              SizedBox(
                                                   height:
                                                       constraints.maxHeight *
                                                           0.05,
